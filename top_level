@@ -1,0 +1,36 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.all;
+
+entity top_level is
+Port ( Clk       : in STD_LOGIC;
+		 serial_in  : in std_logic;
+		 symbol_out : out std_logic_vector(7 downto 0)
+);
+end top_level;
+
+architecture Behavioral of top_level is
+
+signal parallel_data : std_logic_vector(5 downto 0); 
+signal enable : std_logic;
+
+component sin_pout 
+    Port ( clk,si : in  STD_LOGIC;
+			  enable : out std_logic;
+			  po: inout std_logic_vector(5 downto 0) );
+end component;
+
+component map_qam_mod is
+    Port ( clk    : in STD_LOGIC;
+			  Input  : in   std_logic_vector (5 downto 0);
+			  enable : in STD_LOGIC;
+			  Output : out  std_logic_vector (7 downto 0));
+end component;
+
+
+begin
+    m_x: sin_pout port map(si => serial_in, clk => Clk, enable => enable , po => parallel_data);
+    m_y: map_qam_mod port map(clk => Clk , Input => parallel_data , enable => enable , output => symbol_out);
+	 
+end Behavioral;
+
