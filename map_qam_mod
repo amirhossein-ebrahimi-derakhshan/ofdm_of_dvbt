@@ -1,0 +1,33 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.all;
+
+entity map_qam_mod is
+    Port ( clk    : in STD_LOGIC;
+			  Input  : in    STD_LOGIC_vector (5 downto 0);
+			  enable : in STD_LOGIC;
+			  Output : out   STD_LOGIC_vector (7 downto 0));
+end map_qam_mod;
+
+architecture Behavioral of map_qam_mod is
+
+
+begin
+		process(clk)
+		begin
+				if(rising_edge(clk))then
+					if (enable = '1') then
+						Output(4) <= '1';
+						Output(5) <= ((not Input(0)) and (not Input(2)) and (not Input(4))) or ((not Input(0)) and (Input(2)) and (Input(4))) or ((Input(0)) and (Input(2)) and (not Input(4))) or ((Input(0)) and (not Input(2)) and (Input(4))) ;
+						Output(6) <= ((not Input(4)) and (not Input(2))) or (Input(4) and Input(2));
+						Output(7) <= Input(4);
+						Output(0) <= '1';
+						Output(1) <= ((not Input(1)) and (not Input(3)) and (not Input(5))) or ((not Input(1)) and (Input(3)) and (Input(5))) or ((Input(1)) and (Input(3)) and (not Input(5))) or ((Input(1)) and (not Input(3)) and (Input(5))) ;
+						Output(2) <= ((not Input(5)) and (not Input(3))) or (Input(5) and Input(3));
+						Output(3) <= Input(5);
+					end if;
+				end if;
+		end process;		
+
+end Behavioral;
+
