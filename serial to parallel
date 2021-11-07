@@ -1,1 +1,35 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.numeric_std.all;
 
+entity sin_pout is
+    Port ( clk,si : in  STD_LOGIC;
+			  enable : out std_logic;
+	 po: inout std_logic_vector(5 downto 0) );
+end sin_pout;
+
+architecture Behavioral of sin_pout is
+
+signal int_sig : std_logic_vector (5 downto 0) := (others => '0');
+signal counter_out_int : unsigned (3 downto 0) := (others => '0');
+
+
+begin 
+process(clk)
+begin
+
+		if rising_edge(clk) then
+				int_sig(5 downto 1) <= int_sig(4 downto 0);
+				int_sig(0) <= si;
+				
+				counter_out_int <= counter_out_int+1;
+				if (counter_out_int = "101") then
+						po <= int_sig;
+						counter_out_int <= (others => '0');
+						enable <= '1';
+				else
+						enable <= '0';
+				end if;
+		end if;
+end process;
+end Behavioral;
